@@ -9,8 +9,12 @@ controller.list = (req, res) => {
                 res.json(err);
             }
 
-            res.json({
-                data: profiles
+            res.status(200).json({
+                message: 'Success',
+                response: 200,
+                result: {
+                    data: profiles
+                }
             });
         });
     });
@@ -24,8 +28,10 @@ controller.save = (req, res) => {
             if (err) {
                 res.json(err);
             }
-
-            res.redirect('/');
+            res.status(200).json({
+                message: 'Success',
+                response: 200,
+            });
         });
     });
 };
@@ -39,8 +45,10 @@ controller.update = (req, res) => {
             if (err) {
                 res.json(err);
             }
-            
-            res.redirect('/');
+            res.status(200).json({
+                message: 'Success',
+                response: 200,
+            });
         });
     });
 };

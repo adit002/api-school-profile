@@ -1,16 +1,18 @@
-const res = require("express/lib/response");
-
 const controller = {};
 
 controller.list = (req, res) => {
     req.getConnection((err, conn) => {
-        conn.query('SELECT * FROM news', (err, newss) => {
+        conn.query('SELECT * FROM news', (err, news) => {
             if (err) {
                 res.json(err);
             }
 
-            res.json({
-                data: newss
+            res.status(200).json({
+                message: 'Success',
+                response: 200,
+                result: {
+                    data: news
+                }
             });
         });
     });
@@ -24,8 +26,10 @@ controller.save = (req, res) => {
             if (err) {
                 res.json(err);
             }
-
-            res.redirect('/');
+            res.status(200).json({
+                message: 'Success',
+                response: 200,
+            });
         });
     });
 };
@@ -39,8 +43,10 @@ controller.update = (req, res) => {
             if (err) {
                 res.json(err);
             }
-            
-            res.redirect('/');
+            res.status(200).json({
+                message: 'Success',
+                response: 200,
+            });
         });
     });
 };
