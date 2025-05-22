@@ -35,9 +35,8 @@ controller.save = (req, res) => {
 };
 
 controller.update = (req, res) => {
-    const { id } = req.params;
-    const newnews = req.body;
-    
+    const { id, ...newnews } = req.body;
+
     req.getConnection((err, conn) => {
         conn.query('UPDATE news set ? WHERE id = ?', [newnews, id], (err, rows) => {
             if (err) {

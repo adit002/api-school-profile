@@ -37,8 +37,7 @@ controller.save = (req, res) => {
 };
 
 controller.update = (req, res) => {
-    const { id } = req.params;
-    const newregister = req.body;
+    const { id, ...newregister } = req.body;
     
     req.getConnection((err, conn) => {
         conn.query('UPDATE register set ? WHERE id = ?', [newregister, id], (err, rows) => {

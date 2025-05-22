@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS profile (
     history VARCHAR (250) NOT NULL,
     structure VARCHAR (250) NOT NULL,
     visi VARCHAR (250) NOT NULL,
+    image LONGTEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -37,7 +38,9 @@ CREATE TABLE IF NOT EXISTS register (
     parent_name VARCHAR (250) NOT NULL,
     email VARCHAR (250),
     phone VARCHAR (250),
-    image_base64 LONGTEXT,
+    image_akte LONGTEXT,
+    image_ijazah LONGTEXT,
+    image_skhun LONGTEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

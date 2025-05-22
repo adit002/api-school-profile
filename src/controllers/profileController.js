@@ -37,9 +37,8 @@ controller.save = (req, res) => {
 };
 
 controller.update = (req, res) => {
-    const { id } = req.params;
-    const newprofile = req.body;
-    
+    const { id, ...newprofile } = req.body;
+
     req.getConnection((err, conn) => {
         conn.query('UPDATE profile set ? WHERE id = ?', [newprofile, id], (err, rows) => {
             if (err) {

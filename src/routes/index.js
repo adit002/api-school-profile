@@ -8,16 +8,16 @@ const registerController = require('../controllers/registerController');
 const userController = require('../controllers/userController');
 
 router.post('/public/user/login', userController.login);
+router.get('/public/user/list/profile', profileController.list);
+router.get('/public/user/list/news', newsController.list);
+router.post('/public/user/register/add', registerController.save);
 
 router.get('/private/user/list/user', verifyToken, userController.list);
-router.get('/private/user/list/profile', verifyToken, profileController.list);
 router.post('/private/user/profile/add',verifyToken, profileController.save);
-router.post('/private/user/profile/update/:id', verifyToken, profileController.update);
-router.get('/private/user/list/news', verifyToken, newsController.list);
+router.post('/private/user/profile/update', verifyToken, profileController.update);
 router.post('/private/user/news/add', verifyToken, newsController.save);
-router.post('/private/user/news/update/:id', verifyToken, newsController.update);
+router.post('/private/user/news/update', verifyToken, newsController.update);
 router.get('/private/user/list/register', verifyToken, registerController.list);
-router.post('/private/user/register/add', verifyToken, registerController.save);
-router.post('/private/user/register/update/:id', verifyToken, registerController.update);
+router.post('/private/user/register/update', verifyToken, registerController.update);
 
 module.exports = router;

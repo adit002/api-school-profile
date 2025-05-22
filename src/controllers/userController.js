@@ -94,8 +94,7 @@ controller.save = (req, res) => {
 };
 
 controller.update = (req, res) => {
-    const { id } = req.params;
-    const newuser = req.body;
+    const { id, ...newuser } = req.body;
     
     req.getConnection((err, conn) => {
         conn.query('UPDATE user set ? WHERE id = ?', [newuser, id], (err, rows) => {
