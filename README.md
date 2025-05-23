@@ -83,3 +83,21 @@ For detailed API documentation and usage examples, refer to the API Documentatio
 
 License
 This project is licensed under the MIT License.
+
+### build docker
+
+```sh
+docker build -t api_school_profile .
+```
+
+### compose docker
+
+```sh
+docker compose up -d
+```
+
+### down docker
+
+```sh
+docker compose down
+```

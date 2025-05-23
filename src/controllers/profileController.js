@@ -21,19 +21,24 @@ controller.list = (req, res) => {
 };
 
 controller.save = (req, res) => {
-    const data = req.body;
+  const { id, ...data } = req.body;
 
-    req.getConnection((err, conn) => {
-        conn.query('INSERT INTO profile set ?', [data], (err, profile) => {
-            if (err) {
-                res.json(err);
-            }
-            res.status(200).json({
-                message: 'Success',
-                response: 200,
-            });
-        });
+  req.getConnection((err, conn) => {
+    if (err) {
+      return res.status(500).json({ message: 'Database connection error', error: err });
+    }
+    conn.query('INSERT INTO profile SET ?', [data], (err, result) => {
+      if (err) {
+        return res.status(500).json({ message: 'Insert failed', error: err });
+      }
+
+      return res.status(200).json({
+        message: 'Success',
+        response: 200,
+        insertId: result.insertId, 
+      });
     });
+  });
 };
 
 controller.update = (req, res) => {
