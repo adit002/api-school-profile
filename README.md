@@ -99,6 +99,6 @@ docker compose up -d
 ### down docker
 
 ```sh
-docker compose down
+docker compose down -v
 ```
 

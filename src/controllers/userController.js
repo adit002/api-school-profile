@@ -1,6 +1,7 @@
-const res = require("express/lib/response");
-const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+const crypto = require('crypto');
+const SECRET_KEY = 'your-secret-key';
 
 const controller = {};
 
@@ -9,53 +10,47 @@ controller.login = (req, res) => {
 
     req.getConnection((err, conn) => {
         if (err) {
-            return res.status(500).json({
-                message: 'Database connection error',
-                response: 500,
-                result: null
-            });
+            return res.status(500).json({ message: 'Database connection error' });
         }
 
-        conn.query('SELECT * FROM user WHERE username = ?', [username], (err, users) => {
+        conn.query('SELECT * FROM user WHERE username = ?', [username], async (err, users) => {
             if (err) {
-                return res.status(500).json({
-                    message: 'Query error',
-                    response: 500,
-                    result: null
-                });
+                return res.status(500).json({ message: 'Query error' });
             }
 
             if (users.length === 0) {
-                return res.status(401).json({
-                    message: 'User not found',
-                    response: 401,
-                    result: { result: 'Failed' }
-                });
+                return res.status(401).json({ message: 'User not found' });
             }
 
             const user = users[0];
             const passwordMatch = bcrypt.compareSync(password, user.password);
 
             if (!passwordMatch) {
-                return res.status(401).json({
-                    message: 'Invalid password',
-                    response: 401,
-                    result: { result: 'Failed' }
-                });
+                return res.status(401).json({ message: 'Invalid password' });
             }
 
-            const token = jwt.sign(
-                { id: user.id, username: user.username },'your-secret-key',
-                { expiresIn: '1h' }
-            );
+            const sessionId = crypto.randomUUID();
 
-            res.status(200).json({
-                message: 'Success',
-                response: 200,
-                result: {
-                    token: token
+            conn.query(
+                `REPLACE INTO user_sessions (user_id, session_id) VALUES (?, ?)`,
+                [user.id, sessionId],
+                (err) => {
+                    if (err) {
+                        return res.status(500).json({ message: 'Session DB error' });
+                    }
+
+                    const token = jwt.sign(
+                        { id: user.id, username: user.username, sessionId },
+                        SECRET_KEY,
+                        { expiresIn: '1h' }
+                    );
+
+                    return res.status(200).json({
+                        message: 'Success',
+                        result: { token }
+                    });
                 }
-            });
+            );
         });
     });
 };
